@@ -52,6 +52,12 @@ class XliffLoader implements LoaderInterface
 
         $catalogue = new MessageCatalogue($locale);
         foreach ($xml->xpath('//xliff:trans-unit') as $translation) {
+            $attributes = $translation->attributes();
+
+            if (!(isset($attributes['resname']) || isset($translation->source)) || !isset($translation->target) || (isset($translation->target['state']) && $translation->target['state'] == 'needs-translation')) {
+                continue;
+            }
+
             $id = ($resName = (string) $translation->attributes()->resname)
                        ? $resName : (string) $translation->source;
 
