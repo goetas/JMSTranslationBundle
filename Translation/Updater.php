@@ -242,6 +242,15 @@ class Updater
                     $message->setLocaleString($message->getId());
                 }
             }
+        } else {
+            // new translation set as empty
+            foreach ($this->scannedCatalogue->getDomains() as $domainCatalogue) {
+                foreach ($domainCatalogue->all() as $message) {
+                    if ($message->isNew()){
+                        $message->setLocaleString('');
+                    }
+                }
+            }
         }
 
         // merge existing messages into scanned messages
